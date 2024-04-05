@@ -11,19 +11,46 @@ const getAllResorts = async () => {
 };
 
 const getResortById = async (resortId) => {
-  // Implementation to fetch a single resort by ID
+  try {
+    const result = await pool.query("SELECT * FROM resorts WHERE resort_id = $1", [resortId]);
+    return result.rows[0];
+  } catch (err) {
+    throw err;
+  }
 };
 
 const createResort = async (resortData) => {
-  // Implementation to create a new resort
+  try {
+    const { name, city, country, resort_type, summary, cost_category, current_rate, amenities } = resortData;
+    const result = await pool.query(
+      "INSERT INTO resorts (name, city, country, resort_type, summary, cost_category, current_rate, amenities) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      [name, city, country, resort_type, summary, cost_category, current_rate, amenities]
+    );
+    return result.rows[0];
+  } catch (err) {
+    throw err;
+  }
 };
 
 const updateResort = async (resortId, resortData) => {
-  // Implementation to update a resort
+  try {
+    const { name, city, country, resort_type, summary, cost_category, current_rate, amenities } = resortData;
+    const result = await pool.query(
+      "UPDATE resorts SET name = $1, city = $2, country = $3, resort_type = $4, summary = $5, cost_category = $6, current_rate = $7, amenities = $8 WHERE resort_id = $9 RETURNING *",
+      [name, city, country, resort_type, summary, cost_category, current_rate, amenities, resortId]
+    );
+    return result.rows[0];
+  } catch (err) {
+    throw err;
+  }
 };
 
 const deleteResort = async (resortId) => {
-  // Implementation to delete a resort
+  try {
+    await pool.query("DELETE FROM resorts WHERE resort_id = $1", [resortId]);
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = {
@@ -33,3 +60,4 @@ module.exports = {
   updateResort,
   deleteResort,
 };
+
