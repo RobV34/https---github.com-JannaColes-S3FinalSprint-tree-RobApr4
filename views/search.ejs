@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Resorts</title>
+    <!-- Include your CSS here -->
+</head>
+<body>
+    <h1>Search Resorts</h1>
+    <form action="/resorts/search-results" method="get">
+        <input type="text" name="keyword" placeholder="Enter search term" required>
+        <button type="submit">Search</button>
+    </form>
+    
+    <% if (typeof resorts !== 'undefined') { %>
+        <% if (resorts.length > 0) { %>
+            <% resorts.forEach(function(resort) { %>
+                <!-- Display each resort here -->
+                <div class="resort-container">
+                    <h2><%= resort.name %></h2>
+                    <!-- Display other resort details -->
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No resorts found.</p>
+        <% } %>
+    <% } %>
+</body>
+</html>
+

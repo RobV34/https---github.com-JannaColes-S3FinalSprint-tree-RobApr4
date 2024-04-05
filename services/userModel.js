@@ -1,3 +1,5 @@
+// userModel.js
+// Description: This file contains the User model which is used to interact with the users table in the database.
 const pool = require("./pg_auth_db");
 const bcrypt = require("bcrypt");
 

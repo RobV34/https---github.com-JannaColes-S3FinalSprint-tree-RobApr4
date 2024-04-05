@@ -1,31 +1,21 @@
-const express = require("express");
-const passport = require("passport");
+// routes/userlogin.js
+const express = require('express');
 const router = express.Router();
-const authService = require("../services/authService"); // You would create this
+const passport = require('../services/authService');
 
-// User login page
-router.get("/login/user", (req, res) => {
-  res.render("userLogin");
+// Display the user login form
+router.get('/', (req, res) => {
+  res.render('user-login', { message: req.flash('error') }); // Assuming you are using connect-flash for flash messages
 });
 
-// User login route
-router.post(
-  "/login/user",
-  passport.authenticate("local", {
-    successRedirect: "/user/dashboard", // or where you want the user to go after login
-    failureRedirect: "/login/user",
-    failureFlash: true,
-  })
-);
-
-// Admin login route
-router.post(
-  "/login/admin",
-  passport.authenticate("local", {
-    successRedirect: "/admin/dashboard", // or where you want the admin to go after login
-    failureRedirect: "/login/admin",
-    failureFlash: true,
-  })
-);
+// Handle the user login form submission
+router.post('/', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/', // Redirect to home or another page on successful login
+    failureRedirect: '/userlogin', // Redirect back to login page on failure
+    failureFlash: true // Enable flash messages for login failure
+  })(req, res, next);
+});
 
 module.exports = router;
+
